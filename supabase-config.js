@@ -9,6 +9,7 @@ let SUPABASE_CONFIG = {
 let configLoaded = false;
 let configLoadPromise = null;
 let apiBaseUrl = '';
+const DEFAULT_API_BASE_URL = 'https://project-backend-v0f8.onrender.com';
 
 function normalizeBase(url) {
   if (!url) return '';
@@ -18,6 +19,13 @@ function normalizeBase(url) {
 function buildCandidateApiBases() {
   const candidates = [];
   const hasWindow = typeof window !== 'undefined' && window.location;
+  const manualBase = hasWindow
+    ? normalizeBase(window.API_BASE_URL || window.RENDER_BACKEND_URL || DEFAULT_API_BASE_URL)
+    : normalizeBase(DEFAULT_API_BASE_URL);
+
+  if (manualBase) {
+    candidates.push(manualBase);
+  }
 
   if (hasWindow) {
     const fromPublicPath = /^\/public(\/|$)/.test(window.location.pathname || '/');
@@ -80,6 +88,12 @@ async function loadConfig() {
       return SUPABASE_CONFIG;
     } catch (error) {
       console.error('Error loading Supabase config:', error);
+      if (!apiBaseUrl) {
+        apiBaseUrl = normalizeBase(
+          (typeof window !== 'undefined' && (window.API_BASE_URL || window.RENDER_BACKEND_URL))
+            || DEFAULT_API_BASE_URL
+        );
+      }
       // Fallback to window variables if set (for development)
       SUPABASE_CONFIG = {
         url: window.SUPABASE_URL || '',
