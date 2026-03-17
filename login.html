@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | AI Study Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="dark-body">
+    <main class="auth-shell">
+      <a class="auth-back-link" href="index.html">← Back to Home</a>
+
+      <section class="auth-card glass-card" aria-labelledby="auth-title">
+        <header class="auth-header">
+          <div class="auth-logo">
+            <span class="logo-mark">AI</span>
+            <span class="logo-text">Study Assistant</span>
+          </div>
+          <h1 id="auth-title" class="auth-title">Sign in</h1>
+          <p class="auth-subtitle">
+            Use any email/password to continue (demo login).
+          </p>
+        </header>
+
+        <form id="login-form" class="auth-form" novalidate>
+          <label class="auth-label" for="login-email">Email</label>
+          <input
+            id="login-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            class="auth-input"
+            placeholder="you@example.com"
+            required
+          />
+
+          <label class="auth-label" for="login-password">Password</label>
+          <input
+            id="login-password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            class="auth-input"
+            placeholder="••••••••"
+            required
+          />
+
+          <button id="login-submit" class="btn primary-btn auth-submit" type="submit">
+            Login
+          </button>
+
+          <p id="login-error" class="auth-error hidden" role="alert"></p>
+
+          <div class="auth-footer">
+            <a class="auth-link" href="signup.html">Create an account</a>
+            <a class="auth-link" href="study.html">Continue as guest</a>
+            <button id="logout-btn" class="btn ghost-btn auth-logout hidden" type="button">
+              Log out
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <!-- Supabase Configuration (loaded from server /api/config endpoint) -->
+    <script src="supabase-config.js"></script>
+    <script src="login.js"></script>
+  </body>
+</html>
+
+

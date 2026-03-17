@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up | AI Study Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="dark-body">
+    <main class="auth-shell">
+      <a class="auth-back-link" href="index.html">← Back to Home</a>
+
+      <section class="auth-card glass-card" aria-labelledby="auth-title">
+        <header class="auth-header">
+          <div class="auth-logo">
+            <span class="logo-mark">AI</span>
+            <span class="logo-text">Study Assistant</span>
+          </div>
+          <h1 id="auth-title" class="auth-title">Create your account</h1>
+          <p class="auth-subtitle">Saved locally in this browser (demo signup).</p>
+        </header>
+
+        <form id="signup-form" class="auth-form" novalidate>
+          <label class="auth-label" for="signup-email">Email</label>
+          <input
+            id="signup-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            class="auth-input"
+            placeholder="you@example.com"
+            required
+          />
+
+          <label class="auth-label" for="signup-password">Password</label>
+          <input
+            id="signup-password"
+            name="password"
+            type="password"
+            autocomplete="new-password"
+            class="auth-input"
+            placeholder="At least 6 characters"
+            required
+          />
+
+          <label class="auth-label" for="signup-confirm">Confirm password</label>
+          <input
+            id="signup-confirm"
+            name="confirmPassword"
+            type="password"
+            autocomplete="new-password"
+            class="auth-input"
+            placeholder="Re-enter your password"
+            required
+          />
+
+          <button class="btn primary-btn auth-submit" type="submit">Create account</button>
+
+          <p id="signup-error" class="auth-error hidden" role="alert"></p>
+
+          <div class="auth-footer">
+            <a class="auth-link" href="login.html">Already have an account? Sign in</a>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <!-- Supabase Configuration (loaded from server /api/config endpoint) -->
+    <script src="supabase-config.js"></script>
+    <script src="signup.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

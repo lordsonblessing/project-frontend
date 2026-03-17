@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Study Assistant — Dashboard</title>
+  <meta name="description"
+    content="AI-powered study assistant dashboard. Ask questions, generate summaries, and take quizzes — all in one place." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="dashboard">
+    <!-- ===== Left Sidebar ===== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-logo">
+          <div class="logo-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 17l10 5 10-5" />
+              <path d="M2 12l10 5 10-5" />
+            </svg>
+          </div>
+          <div class="logo-text">
+            <span class="logo-title">AI Study Assistant</span>
+            <span class="logo-sub">Smart Learning Dashboard</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button class="nav-btn active" data-section="query" id="nav-query">
+            <span class="nav-icon">📘</span>
+            <span class="nav-label">Ask Query</span>
+          </button>
+          <button class="nav-btn" data-section="summary" id="nav-summary">
+            <span class="nav-icon">📝</span>
+            <span class="nav-label">Summarize</span>
+          </button>
+          <button class="nav-btn" data-section="quiz" id="nav-quiz">
+            <span class="nav-icon">🎯</span>
+            <span class="nav-label">Quiz Generator</span>
+          </button>
+          <button class="nav-btn" data-section="history" id="nav-history">
+            <span class="nav-icon">📜</span>
+            <span class="nav-label">History</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+
+        <a class="nav-btn nav-btn--link" href="study.html">
+          <span class="nav-icon">📚</span>
+          <span class="nav-label">Study Pack</span>
+        </a>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="auth-controls">
+          <span id="user-greeting" class="user-greeting hidden"></span>
+          <a id="login-link" class="sidebar-auth-btn" href="login.html">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+              <polyline points="10 17 15 12 10 7" />
+              <line x1="15" y1="12" x2="3" y2="12" />
+            </svg>
+            Login
+          </a>
+          <button id="logout-pill" class="sidebar-auth-btn hidden" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            Logout
+          </button>
+        </div>
+        <p class="sidebar-copy">&copy; 2026 AI Study Assistant</p>
+      </div>
+    </aside>
+
+    <!-- ===== Mobile Top Bar ===== -->
+    <div class="mobile-topbar" id="mobile-topbar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+            <path d="M2 17l10 5 10-5" />
+            <path d="M2 12l10 5 10-5" />
+          </svg>
+        </div>
+        <span class="logo-title">AI Study Assistant</span>
+      </div>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- ===== Main Content ===== -->
+    <main class="main-area">
+      <!-- ========== ASK QUERY SECTION ========== -->
+      <section class="panel active" id="panel-query">
+        <div class="panel-header">
+          <div>
+            <h1 class="panel-title"><span class="panel-emoji">📘</span> Ask a Query</h1>
+            <p class="panel-desc">Enter any topic or question and get a clear, structured explanation powered by AI.</p>
+          </div>
+        </div>
+
+        <div class="input-card">
+          <label class="input-label" for="query-input">Your question or topic</label>
+          <div class="input-row">
+            <input id="query-input" type="text" class="text-input"
+              placeholder="e.g. Explain photosynthesis in simple terms" autocomplete="off" />
+            <button class="action-btn" id="query-submit" type="button">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+              </svg>
+              Ask AI
+            </button>
+            <button class="clear-btn" id="query-clear" type="button" title="Clear">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="output-area" id="query-output">
+          <div class="output-placeholder">
+            <div class="placeholder-icon">💡</div>
+            <p>Your AI-generated explanation will appear here.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== SUMMARIZATION SECTION ========== -->
+      <section class="panel" id="panel-summary">
+        <div class="panel-header">
+          <div>
+            <h1 class="panel-title"><span class="panel-emoji">📝</span> Summarize a Topic</h1>
+            <p class="panel-desc">Get concise, student-friendly bullet-point summaries of any study topic.</p>
+          </div>
+        </div>
+
+        <div class="input-card">
+          <label class="input-label" for="summary-input">Topic to summarize</label>
+          <div class="input-row">
+            <input id="summary-input" type="text" class="text-input" placeholder="e.g. World War II causes and effects"
+              autocomplete="off" />
+            <button class="action-btn" id="summary-submit" type="button">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+              </svg>
+              Summarize
+            </button>
+            <button class="clear-btn" id="summary-clear" type="button" title="Clear">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="output-area" id="summary-output">
+          <div class="output-placeholder">
+            <div class="placeholder-icon">📄</div>
+            <p>Your AI-generated summary will appear here.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== QUIZ GENERATOR SECTION ========== -->
+      <section class="panel" id="panel-quiz">
+        <div class="panel-header">
+          <div>
+            <h1 class="panel-title"><span class="panel-emoji">🎯</span> Quiz Generator</h1>
+            <p class="panel-desc">Generate multiple-choice quiz questions on any topic to test your knowledge.</p>
+          </div>
+        </div>
+
+        <div class="input-card">
+          <label class="input-label" for="quiz-input">Quiz topic</label>
+          <div class="input-row">
+            <input id="quiz-input" type="text" class="text-input" placeholder="e.g. Newton's Laws of Motion"
+              autocomplete="off" />
+            <button class="action-btn" id="quiz-submit" type="button">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+              Generate Quiz
+            </button>
+            <button class="clear-btn" id="quiz-clear" type="button" title="Clear">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="output-area" id="quiz-output">
+          <div class="output-placeholder">
+            <div class="placeholder-icon">🧠</div>
+            <p>Your AI-generated quiz questions will appear here.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== HISTORY SECTION ========== -->
+      <section class="panel" id="panel-history">
+        <div class="panel-header">
+          <div>
+            <h1 class="panel-title"><span class="panel-emoji">📜</span> Study History</h1>
+            <p class="panel-desc">View your past conversations and AI interactions saved in the database.</p>
+          </div>
+          <button class="clear-btn" id="clear-history-btn" title="Clear History">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              <line x1="10" y1="11" x2="10" y2="17"></line>
+              <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="history-container glass-card" id="history-list">
+          <!-- History items will appear here -->
+          <div class="output-placeholder">
+            <div class="placeholder-icon">📜</div>
+            <p>Your conversation history will appear here once you've started studying.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Supabase Client Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <!-- Supabase Configuration -->
+  <script src="supabase-config.js"></script>
+  <!-- Dashboard Logic -->
+  <script src="dashboard.js"></script>
+</body>
+
+</html>

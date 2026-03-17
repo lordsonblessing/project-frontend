@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Study Assistant | AI Study Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="dark-body">
+    <div class="app-shell">
+      <aside class="side-nav">
+        <div class="logo">
+          <span class="logo-mark">AI</span>
+          <span class="logo-text">Study Assistant</span>
+        </div>
+        <nav>
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="study.html" class="nav-link active">Study Assistant</a>
+          <a href="login.html" class="nav-link">Login</a>
+          <button class="nav-link nav-link-ghost" id="open-history-btn" type="button">
+            History
+          </button>
+          <a href="index.html#about" class="nav-link">About</a>
+        </nav>
+        <div class="nav-footer">
+          <span class="nav-footer-text">Study smarter, not harder.</span>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="study-header">
+          <div>
+            <h1 class="gradient-text">Study Assistant</h1>
+            <p class="subtitle">
+              Enter any topic and get an explanation, summary, notes, and quiz questions in one
+              place.
+            </p>
+          </div>
+        </header>
+
+        <section class="study-input-section">
+          <label for="topic-input" class="input-label">What would you like to study today?</label>
+          <div class="input-row">
+            <input
+              id="topic-input"
+              type="text"
+              placeholder="e.g., Basics of Neural Networks, Photosynthesis, World War II..."
+              class="topic-input"
+            />
+            <button id="study-btn" class="btn primary-btn" type="button">Start Studying</button>
+          </div>
+          <p class="helper-text">Tip: Be as specific as you like — the assistant adapts.</p>
+        </section>
+
+        <section class="recent-topics-section">
+          <div class="section-header">
+            <h2>Recent topics</h2>
+            <button id="clear-inline-history-btn" class="link-btn" type="button">
+              Clear
+            </button>
+          </div>
+          <div id="recent-topics-inline" class="recent-topics-chips"></div>
+        </section>
+
+        <section class="results-section">
+          <div id="loading-indicator" class="loading-indicator hidden">
+            <div class="loading-dots">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+            <p class="loading-text">AI is preparing your study pack...</p>
+          </div>
+
+          <div id="results-container" class="results-container hidden">
+            <div class="result-card collapsible open" data-section="explanation">
+              <button class="collapsible-header" type="button">
+                <span>AI Explanation</span>
+                <span class="chevron">&#9662;</span>
+              </button>
+              <div class="collapsible-body">
+                <div id="explanation-content" class="typewriter"></div>
+              </div>
+            </div>
+
+            <div class="result-card collapsible" data-section="summary">
+              <button class="collapsible-header" type="button">
+                <span>Summary</span>
+                <span class="chevron">&#9662;</span>
+              </button>
+              <div class="collapsible-body">
+                <div id="summary-content" class="typewriter"></div>
+              </div>
+            </div>
+
+            <div class="result-card collapsible" data-section="notes">
+              <button class="collapsible-header" type="button">
+                <span>Notes</span>
+                <span class="chevron">&#9662;</span>
+              </button>
+              <div class="collapsible-body">
+                <div id="notes-content" class="typewriter"></div>
+              </div>
+            </div>
+
+            <div class="result-card collapsible" data-section="quiz">
+              <button class="collapsible-header" type="button">
+                <span>Quiz Questions</span>
+                <span class="chevron">&#9662;</span>
+              </button>
+              <div class="collapsible-body">
+                <div id="quiz-content"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="history-modal" class="history-modal hidden">
+      <div class="history-overlay"></div>
+      <div class="history-panel">
+        <div class="history-header">
+          <h2>Recent Study Topics</h2>
+          <button id="close-history-btn" class="icon-btn" type="button">&times;</button>
+        </div>
+        <div id="history-list" class="history-list"></div>
+        <div class="history-footer">
+          <button id="clear-history-btn" class="btn ghost-btn" type="button">Clear History</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <!-- Supabase Configuration (loaded from server /api/config endpoint) -->
+    <script src="supabase-config.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
+
+
