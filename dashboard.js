@@ -340,6 +340,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await res.json();
             const explanation = data.explanation || 'No explanation received.';
             await typewriterRender(queryOutput, explanation);
+
+            // Save to history
+            if (currentUser && window.supabaseDb) {
+                await window.supabaseDb.saveStudyHistory(currentUser.id, `Explain: ${topic}`, {
+                    type: 'explanation',
+                    content: explanation
+                });
+            }
         } catch (err) {
             console.error('Query error:', err);
             showError(queryOutput, err.message || 'Something went wrong.');
@@ -393,6 +401,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await res.json();
             const summary = data.summary || 'No summary received.';
             await typewriterRender(summaryOutput, summary);
+
+            // Save to history
+            if (currentUser && window.supabaseDb) {
+                await window.supabaseDb.saveStudyHistory(currentUser.id, `Summary: ${topic}`, {
+                    type: 'summary',
+                    content: summary
+                });
+            }
         } catch (err) {
             console.error('Summary error:', err);
             showError(summaryOutput, err.message || 'Something went wrong.');
@@ -451,6 +467,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             renderQuiz(quizOutput, quiz);
+
+            // Save to history
+            if (currentUser && window.supabaseDb) {
+                await window.supabaseDb.saveStudyHistory(currentUser.id, `Quiz: ${topic}`, {
+                    type: 'quiz',
+                    content: quiz
+                });
+            }
         } catch (err) {
             console.error('Quiz error:', err);
             showError(quizOutput, err.message || 'Something went wrong.');
@@ -609,38 +633,68 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Show loading state
             historyList.innerHTML = '<div class="loading-spinner">Loading history...</div>';
 
-            // We fetch both chatbot conversations AND generic study records if they exist
-            const conversations = await window.supabaseDb.getConversations(currentUser.id);
+            console.log('Fetching history for user:', currentUser.id);
+
+            // Fetch both chatbot conversations AND generic study records
+            const [conversations, studyRecords] = await Promise.all([
+                window.supabaseDb.getConversations(currentUser.id),
+                window.supabaseDb.getStudyHistory(currentUser.id)
+            ]);
+
+            console.log('History fetched. Conversations:', conversations.length, 'Study Records:', studyRecords.length);
 
             historyList.innerHTML = '';
 
-            if (conversations && conversations.length > 0) {
-                conversations.forEach(msg => {
-                    renderHistoryCard(msg.role, msg.content, msg.created_at);
+            // Combine and sort by created_at descending
+            const allHistory = [
+                ...conversations.map(c => ({ ...c, kind: 'chat' })),
+                ...studyRecords.map(s => ({ ...s, kind: 'study' }))
+            ].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+            if (allHistory.length > 0) {
+                allHistory.forEach(item => {
+                    if (item.kind === 'chat') {
+                        renderHistoryCard(item.role, item.content, item.created_at, 'Chat Message');
+                    } else {
+                        // Study record
+                        const label = item.topic || 'Study Interaction';
+                        let content = '';
+                        if (item.payload) {
+                            if (item.payload.type === 'quiz') {
+                                content = `Generated a quiz with ${item.payload.content?.length || 0} questions.`;
+                            } else {
+                                content = item.payload.content || '';
+                            }
+                        }
+                        renderHistoryCard('assistant', content, item.created_at, label);
+                    }
                 });
             } else {
                 showPlaceholder(historyList, '📜', 'No history found. Start asking questions or generating summaries to build your history!');
             }
         } catch (err) {
             console.error('Load history error:', err);
-            historyList.innerHTML = '<div class="error-text">Failed to load history items.</div>';
+            historyList.innerHTML = `<div class="error-text">Failed to load history items: ${err.message}</div>`;
         }
     }
 
-    function renderHistoryCard(role, content, timestamp) {
+    function renderHistoryCard(role, content, timestamp, label = null) {
         const item = document.createElement('div');
         item.className = 'history-item';
 
         const date = new Date(timestamp).toLocaleString();
-        const displayRole = role === 'user' ? 'You' : 'AI Assistant';
+        const displayRole = label || (role === 'user' ? 'You' : 'AI Assistant');
         const roleClass = role === 'user' ? 'role-user' : 'role-assistant';
+
+        // Truncate content for list view if it's too long
+        const displayContent = content.length > 300 ? content.substring(0, 300) + '...' : content;
 
         item.innerHTML = `
             <div class="history-header">
                 <span class="history-role ${roleClass}">${displayRole}</span>
                 <span class="history-time">${date}</span>
             </div>
-            <div class="history-content">${formatMarkdown(content)}</div>
+            <div class="history-content">${formatMarkdown(displayContent)}</div>
         `;
 
         historyList.appendChild(item);

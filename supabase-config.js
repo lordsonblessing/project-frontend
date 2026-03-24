@@ -233,7 +233,7 @@ const db = {
       .limit(50);
 
     if (error) {
-      console.error('Error fetching study history:', error);
+      console.error('Error fetching study history from Supabase:', error.message, error);
       return [];
     }
 
@@ -264,7 +264,10 @@ const db = {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error updating study history in Supabase:', error.message, error);
+        throw error;
+      }
       return data;
     } else {
       // Create new entry
@@ -278,7 +281,10 @@ const db = {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error inserting study history to Supabase:', error.message, error);
+        throw error;
+      }
       return data;
     }
   },
@@ -317,7 +323,7 @@ const db = {
       .limit(200);
 
     if (error) {
-      console.error('Error fetching conversations:', error);
+      console.error('Error fetching conversations from Supabase:', error.message, error);
       return [];
     }
 
@@ -339,7 +345,7 @@ const db = {
       .single();
 
     if (error) {
-      console.error('Error saving message:', error);
+      console.error('Error saving message to Supabase:', error.message, error);
       return null;
     }
     return data;
@@ -367,7 +373,7 @@ const db = {
       .single();
 
     if (error) {
-      console.error('Error fetching profile:', error);
+      console.error('Error fetching profile from Supabase:', error.message, error);
       return null;
     }
     return data;
@@ -385,7 +391,7 @@ const db = {
       .single();
 
     if (error) {
-      console.error('Error updating profile:', error);
+      console.error('Error updating profile in Supabase:', error.message, error);
       return null;
     }
     return data;
