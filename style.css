@@ -1700,61 +1700,119 @@ body.dark-body {
   transform: translateY(-2px);
 }
 
-.history-header {
+/* YouTube-like History UI */
+#history-list {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px dashed var(--border);
+  flex-direction: column;
+  gap: 0;
+  padding: 0.5rem 0;
 }
 
-.history-role {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 0.2rem 0.6rem;
-  border-radius: 4px;
+.yt-history-item {
+  display: flex;
+  gap: 1.25rem;
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background-color var(--transition-fast);
+  cursor: pointer;
+  border-radius: 0;
 }
 
-.role-user {
-  background: rgba(122, 40, 138, 0.15);
-  color: var(--blue-400);
+.yt-history-item:hover {
+  background-color: var(--bg-hover);
 }
 
-.role-assistant {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+.yt-history-item:last-child {
+  border-bottom: none;
 }
 
-.history-time {
-  font-size: 0.7rem;
-  color: var(--text-muted);
+.yt-history-thumbnail {
+  flex-shrink: 0;
 }
 
-.history-content {
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: var(--text-primary);
-  word-wrap: break-word;
-}
-
-.history-content code {
-  background: rgba(241, 245, 249, 0.6);
-  padding: 0.1rem 0.3rem;
-  border-radius: 4px;
-  font-family: 'Courier New', Courier, monospace;
-}
-
-.history-content pre {
-  background: rgba(241, 245, 249, 0.8);
-  padding: 1rem;
+.yt-icon-wrapper {
+  width: 120px;
+  height: 68px;
   border-radius: 8px;
-  overflow-x: auto;
-  margin: 0.75rem 0;
+  background: linear-gradient(135deg, rgba(122, 40, 138, 0.08), rgba(122, 40, 138, 0.03));
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
 }
 
+.yt-history-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  justify-content: center;
+}
+
+.yt-history-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.yt-history-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.yt-meta-dot {
+  font-size: 0.7rem;
+  opacity: 0.5;
+}
+
+.yt-meta-role {
+  font-weight: 500;
+}
+
+.yt-role-user {
+  color: var(--blue-500);
+}
+
+.yt-role-assistant {
+  color: var(--text-primary);
+}
+
+.yt-history-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.yt-history-item.expanded {
+  background-color: var(--bg-hover);
+  border-left: 3px solid var(--blue-500);
+}
+
+.yt-history-item.expanded .yt-history-title {
+  white-space: normal;
+  word-break: break-word;
+}
+
+.yt-history-full {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--border);
+}
 @keyframes messageFadeIn {
   from {
     opacity: 0;

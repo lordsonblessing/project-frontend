@@ -654,19 +654,27 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (allHistory.length > 0) {
                 allHistory.forEach(item => {
                     if (item.kind === 'chat') {
-                        renderHistoryCard(item.role, item.content, item.created_at, 'Chat Message');
+                        renderHistoryCard(item.role, item.content, item.created_at, 'Chat Message', '💬');
                     } else {
                         // Study record
                         const label = item.topic || 'Study Interaction';
                         let content = '';
+                        let icon = '📜';
                         if (item.payload) {
                             if (item.payload.type === 'quiz') {
                                 content = `Generated a quiz with ${item.payload.content?.length || 0} questions.`;
+                                icon = '🎯';
+                            } else if (item.payload.type === 'summary') {
+                                content = item.payload.content || '';
+                                icon = '📝';
+                            } else if (item.payload.type === 'explanation') {
+                                content = item.payload.content || '';
+                                icon = '📘';
                             } else {
                                 content = item.payload.content || '';
                             }
                         }
-                        renderHistoryCard('assistant', content, item.created_at, label);
+                        renderHistoryCard('assistant', content, item.created_at, label, icon);
                     }
                 });
             } else {
@@ -678,24 +686,61 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    function renderHistoryCard(role, content, timestamp, label = null) {
+    function timeAgo(dateParam) {
+        if (!dateParam) return '';
+        const date = new Date(dateParam);
+        const today = new Date();
+        const seconds = Math.round((today - date) / 1000);
+        const minutes = Math.round(seconds / 60);
+        const hours = Math.round(minutes / 60);
+        const days = Math.round(hours / 24);
+        
+        if (seconds < 60) return 'Just now';
+        else if (minutes < 60) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+        else if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+        else if (days < 30) return `${days} day${days > 1 ? 's' : ''} ago`;
+        else if (days < 365) return `${Math.floor(days/30)} month${Math.floor(days/30) > 1 ? 's' : ''} ago`;
+        else return `${Math.floor(days/365)} year${Math.floor(days/365) > 1 ? 's' : ''} ago`;
+    }
+
+    function renderHistoryCard(role, content, timestamp, label = null, icon = '📜') {
         const item = document.createElement('div');
-        item.className = 'history-item';
+        item.className = 'yt-history-item';
 
-        const date = new Date(timestamp).toLocaleString();
-        const displayRole = label || (role === 'user' ? 'You' : 'AI Assistant');
-        const roleClass = role === 'user' ? 'role-user' : 'role-assistant';
-
-        // Truncate content for list view if it's too long
-        const displayContent = content.length > 300 ? content.substring(0, 300) + '...' : content;
+        const displayRole = role === 'user' ? 'You' : 'AI Assistant';
+        // Stripping markdown for cleaner description
+        const rawText = (content || '').replace(/[#*`]|<\/?[^>]+(>|$)/g, '').replace(/\n+/g, ' ');
+        const displayContent = rawText.length > 200 ? rawText.substring(0, 200) + '...' : rawText;
+        const timeStr = timeAgo(timestamp);
 
         item.innerHTML = `
-            <div class="history-header">
-                <span class="history-role ${roleClass}">${displayRole}</span>
-                <span class="history-time">${date}</span>
+            <div class="yt-history-thumbnail">
+                <div class="yt-icon-wrapper">${icon}</div>
             </div>
-            <div class="history-content">${formatMarkdown(displayContent)}</div>
+            <div class="yt-history-details">
+                <h3 class="yt-history-title">${escapeHtml(label || 'History Item')}</h3>
+                <div class="yt-history-meta">
+                    <span class="yt-meta-role yt-role-${role}">${displayRole}</span>
+                    <span class="yt-meta-dot">•</span>
+                    <span class="yt-meta-time">${timeStr}</span>
+                </div>
+                <div class="yt-history-desc">${escapeHtml(displayContent)}</div>
+                <div class="yt-history-full hidden output-content">${formatMarkdown(content || '')}</div>
+            </div>
         `;
+
+        item.addEventListener('click', () => {
+            item.classList.toggle('expanded');
+            const desc = item.querySelector('.yt-history-desc');
+            const full = item.querySelector('.yt-history-full');
+            if (item.classList.contains('expanded')) {
+                desc.classList.add('hidden');
+                full.classList.remove('hidden');
+            } else {
+                desc.classList.remove('hidden');
+                full.classList.add('hidden');
+            }
+        });
 
         historyList.appendChild(item);
     }
